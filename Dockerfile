@@ -1,5 +1,8 @@
 FROM nginx:1.13.0
 
+LABEL maintainer="Luke Watts"
+LABEL version="0.0.1"
+
 ENV APP_URL=http://localhost/
 
 # Update and Upgrade

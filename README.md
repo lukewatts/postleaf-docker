@@ -24,18 +24,27 @@ This is expected while building the image. The final container will work as expe
 
 This is because for some reason the process needs to run and fail once before permissions on the postleaf directory can properly be set. I'm hoping to have this sorted in later releases.
 
-### 2. No volumes
-Currently (v0.0.1) there are no volumes, so once you stop the container any images or data you saved in Postleaf will be lost.
-
-I'll add volumes in the next release.
-
 ## Usage
 1. Once Docker is installed clone this repo: `git clone https://github.com/lukewatts/postleaf-docker.git`
 2. Change into `postleaf-docker` directory: `cd postleaf-docker`
 3. Ensure docker command has sudo rights: `sudo usermod -aG docker sudo`
 4. Build container: `docker build -t postleaf .`
-5. Run the container: `docker run -tid -p 80:80 --name postleaf_dev postleaf`
+5. Run the container: `docker run -tid -v /some/local/path:/usr/share/nginx/html -p 80:80 --name postleaf_dev postleaf`
 6. Visit the url (http://127.0.0.1 or http://localhost)
+
+## Usage (for quick testing)
+1. Follow steps 1 - 4 above.
+2. Run the container so it removes the container when stopped: `docker run -ti --rm -p 80:80 --name postleaf_test postleaf`
+3. Visit the url
+
+## Access container while it is running
+If you want to look at the code of Postleaf or debug issues etc you will need to use `exec` to access the container while it's running.
+
+`docker exec -it postleaf_dev bash`
+
+__NOTE:__ To make edits you will need to install Vim or Nano yourself.
+
+`apt-get install vim nano`
 
 ## If you are not running on localhost
 If you are testing Postleaf on a domain, vhost or on a server with a public IP you will notice the styles are not correctly loaded on the login screen. 
@@ -47,7 +56,6 @@ Assuming you're domain is `http://postleaf.dev/` you will need to use the follow
 `docker run -tid -p 80:80 --env APP_URL=http://postleaf.dev/ --name postleaf_dev postleaf`
 
 ## Future features
-- Volumes to allow for persistant storage.
 - Allow overriding all ENV variables in .env file. Not just APP_URL
 - Fix weird permissions bugs
 - Add to Docker Hub

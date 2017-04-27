@@ -1,7 +1,7 @@
 # Postleaf Docker Container
 Docker container for Postleaf. Currently just for trying out Postleaf.
 
-_IMPORTANT:_ Version 0.0.1 is currently just for exploring the postleaf interface. Changes made in Postleaf will be lost when you stop the container!. This includes images and saved posts and data.
+__IMPORTANT:__ Version 0.0.1 is currently just for exploring the postleaf interface. Changes made in Postleaf will be lost when you stop the container!. This includes images and saved posts and data.
 
 ## Features
 This container has the following servces/applications build in:

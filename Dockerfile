@@ -1,7 +1,7 @@
 FROM nginx:1.13.0
 
-LABEL maintainer="Luke Watts"
-LABEL version="0.0.1"
+LABEL maintainer="Luke Watts @LukeWatts85"
+LABEL version="0.0.2"
 
 ENV APP_URL=http://localhost/
 

@@ -1,7 +1,7 @@
 # Postleaf Docker Container
 Docker container for Postleaf. Currently just for trying out Postleaf.
 
-__IMPORTANT:__ Version 0.0.1 is currently just for exploring the postleaf interface. __Changes made in Postleaf will be lost when you stop the container!__. This includes images and saved posts and data.
+__IMPORTANT:__ Not recommended for production usage. Postleaf is currently in Alpha testing phase and this Dockerfile is currently not for production. 
 
 ## Features
 This container has the following services/software build in:

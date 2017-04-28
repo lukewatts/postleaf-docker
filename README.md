@@ -24,23 +24,25 @@ This is expected while building the image. The final container will work as expe
 
 This is because for some reason the process needs to run and fail once before permissions on the postleaf directory can properly be set. I'm hoping to have this sorted in later releases.
 
-## Usage
+## Usage (with volumes)
 1. Once Docker is installed clone this repo: `git clone https://github.com/lukewatts/postleaf-docker.git`
 2. Change into `postleaf-docker` directory: `cd postleaf-docker`
 3. Ensure docker command has sudo rights: `sudo usermod -aG docker sudo`
-4. Build container: `docker build -t postleaf .`
-5. Run the container: `docker run -tid -v /some/local/path:/usr/share/nginx/html -p 80:80 --name postleaf_dev postleaf`
+4. Build container: `docker build -t postleaf:1.0.0-alpha.2 .`
+5. Create necessary volume directories: `mkdir html/data html/cache/ html/uploads`
+6. Make sure volumes has correct owner: `sudo chown -R root:root $(pwd)/html`
+5. Run the container: `docker run -tid -v $(pwd)/html/data:/usr/share/nginx/html/data -v $(pwd)/html/cache:/usr/share/nginx/html/cache -v $(pwd)/html/uploads:/usr/share/nginx/html/uploads -p 80:80 --name postleaf postleaf:1.0.0-alpha.2`
 6. Visit the url (http://127.0.0.1 or http://localhost)
 
 ## Usage (for quick testing)
 1. Follow steps 1 - 4 above.
-2. Run the container so it removes the container when stopped: `docker run -ti --rm -p 80:80 --name postleaf_test postleaf`
+2. Run the container so it removes the container when stopped: `docker run -ti --rm -p 80:80 --name postleaf_test postleaf:1.0.0-alpha.2`
 3. Visit the url
 
 ## Access container while it is running
 If you want to look at the code of Postleaf or debug issues etc you will need to use `exec` to access the container while it's running.
 
-`docker exec -it postleaf_dev bash`
+`docker exec -it postleaf bash`
 
 __NOTE:__ To make edits you will need to install Vim or Nano yourself.
 
@@ -53,7 +55,7 @@ To fix this you will need to add the `--env` flag to set the `APP_URL` variable.
 
 Assuming you're domain is `http://postleaf.dev/` you will need to use the following command when running the container:
 
-`docker run -tid -p 80:80 --env APP_URL=http://postleaf.dev/ --name postleaf_dev postleaf`
+`docker run -tid -v $(pwd)/html/data:/usr/share/nginx/html/data -v $(pwd)/html/cache:/usr/share/nginx/html/cache -v $(pwd)/html/uploads:/usr/share/nginx/html/uploads -p 80:80 --env APP_URL=http://postleaf.dev/ --name postleaf postleaf:1.0.0-alpha.2`
 
 ## Future features
 - Allow overriding all ENV variables in .env file. Not just APP_URL

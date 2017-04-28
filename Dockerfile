@@ -1,7 +1,7 @@
 FROM nginx:1.13.0
 
 LABEL maintainer="Luke Watts @LukeWatts85"
-LABEL version="0.0.2"
+LABEL version="0.0.3"
 
 ENV APP_URL=http://localhost/
 
@@ -62,12 +62,17 @@ RUN npm install --only=dev && npm install --only=prod
 # Build Postleaf
 RUN gulp build
 
-# I'm not sure why but the container needs to run and fail once 
-# before permissions can be set properly
-# Perhaps some directories aren't present before Postleaf runs
-RUN node app.js
+# Create folders for volumes
+RUN mkdir cache data uploads
+
+# Copy in base database.sq3 file
+COPY html/data/database.sq3 data/database.sq3
+
+# Setup volumes
+VOLUME ["cache", "data", "uploads"]
 
 # Set permissions
+# @todo Currently has no effect because of Nginx image has control of the www-data user
 RUN chown -R $USER:www-data /usr/share/nginx/html/
 RUN chmod -R 775 /usr/share/nginx/html/
 

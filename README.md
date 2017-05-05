@@ -7,36 +7,22 @@ __IMPORTANT:__ Not recommended for production usage. Postleaf is currently in Al
 This container has the following services/software build in:
 
 - Nginx 1.13.0
-- Node 7.9.0
-- Postleaf 1.0.0-alpha.2
-
-## Current Known Issues
-### 1.Error while building container
-While building the container you will see this error:
-
-```
-Error: Postleaf failed to start.
-
-SequelizeUniqueConstraintError: Validation error
-```
-
-This is expected while building the image. The final container will work as expected after this error.
-
-This is because for some reason the process needs to run and fail once before permissions on the postleaf directory can properly be set. I'm hoping to have this sorted in later releases.
+- Node 7.x
+- Postleaf 1.0.0-alpha.3
 
 ## Usage (with volumes)
 1. Once Docker is installed clone this repo: `git clone https://github.com/lukewatts/postleaf-docker.git`
 2. Change into `postleaf-docker` directory: `cd postleaf-docker`
 3. Ensure docker command has sudo rights: `sudo usermod -aG docker sudo`
-4. Build container: `docker build -t postleaf:1.0.0-alpha.2 .`
+4. Build container: `docker build -t postleaf:1.0.0-alpha.3 .`
 5. Create necessary volume directories: `mkdir html/data html/cache/ html/uploads`
 6. Make sure volumes has correct owner: `sudo chown -R root:root $(pwd)/html`
-5. Run the container: `docker run -tid -v $(pwd)/html/data:/usr/share/nginx/html/data -v $(pwd)/html/cache:/usr/share/nginx/html/cache -v $(pwd)/html/uploads:/usr/share/nginx/html/uploads -p 80:80 --name postleaf postleaf:1.0.0-alpha.2`
+5. Run the container: `docker run -tid -v $(pwd)/html/data:/usr/share/nginx/html/data -v $(pwd)/html/cache:/usr/share/nginx/html/cache -v $(pwd)/html/uploads:/usr/share/nginx/html/uploads -p 80:80 --name postleaf postleaf:1.0.0-alpha.3`
 6. Visit the url (http://127.0.0.1 or http://localhost)
 
 ## Usage (for quick testing)
 1. Follow steps 1 - 4 above.
-2. Run the container so it removes the container when stopped: `docker run -ti --rm -p 80:80 --name postleaf_test postleaf:1.0.0-alpha.2`
+2. Run the container so it removes the container when stopped: `docker run -ti --rm -p 80:80 --name postleaf_test postleaf:1.0.0-alpha.3`
 3. Visit the url
 
 ## Access container while it is running
@@ -55,11 +41,10 @@ To fix this you will need to add the `--env` flag to set the `APP_URL` variable.
 
 Assuming you're domain is `http://postleaf.dev/` you will need to use the following command when running the container:
 
-`docker run -tid -v $(pwd)/html/data:/usr/share/nginx/html/data -v $(pwd)/html/cache:/usr/share/nginx/html/cache -v $(pwd)/html/uploads:/usr/share/nginx/html/uploads -p 80:80 --env APP_URL=http://postleaf.dev/ --name postleaf postleaf:1.0.0-alpha.2`
+`docker run -tid -v $(pwd)/html/data:/usr/share/nginx/html/data -v $(pwd)/html/cache:/usr/share/nginx/html/cache -v $(pwd)/html/uploads:/usr/share/nginx/html/uploads -p 80:80 --env APP_URL=http://postleaf.dev/ --name postleaf postleaf:1.0.0-alpha.3`
 
 ## Future features
 - Allow overriding all ENV variables in .env file. Not just APP_URL
-- Fix weird permissions bugs
 - Add to Docker Hub
 
 ## Issues

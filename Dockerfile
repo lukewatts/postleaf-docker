@@ -1,8 +1,9 @@
 FROM nginx:1.13.0
 
 LABEL maintainer="Luke Watts @LukeWatts85"
-LABEL version="0.0.3"
+LABEL version="0.0.4"
 
+# IMPORTANT: Set this to the domain or ip address of you host machine
 ENV APP_URL=http://localhost/
 
 # Update and Upgrade
@@ -36,7 +37,7 @@ RUN apt-get install -y build-essential
 RUN rm -rf /usr/share/nginx/html/*
 
 # Clone repo
-RUN git clone --branch 1.0.0-alpha.2 https://github.com/Postleaf/postleaf.git /usr/share/nginx/html/
+RUN git clone --branch 1.0.0-alpha.3 https://github.com/Postleaf/postleaf.git /usr/share/nginx/html/
 
 # Set permissions
 RUN chown -R $USER:www-data /usr/share/nginx/html
@@ -49,18 +50,18 @@ RUN git clone https://github.com/Postleaf/empower-theme.git themes/empower-theme
 
 # Setup .env file
 RUN cp .env.example .env
-RUN sed -i "s|APP_URL=http://localhost:3000/|APP_URL=$APP_URL|" /usr/share/nginx/html/.env
+RUN sed -i "s|APP_URL=https://example.com/|APP_URL=$APP_URL|" /usr/share/nginx/html/.env
 RUN sed -i "s/APP_PORT=3000/APP_PORT=80/" /usr/share/nginx/html/.env
 RUN HASH=$(date +%s | sha256sum | base64 | head -c 32) ; sed -i "s/CHANGE_THIS_TO_A_RANDOM_STRING/$HASH/" /usr/share/nginx/html/.env
 
 # Install global npm dependencies
-RUN npm install -g gulp
+#RUN npm install -g gulp
 
 # Install postleaf npm dependencies
-RUN npm install --only=dev && npm install --only=prod
+RUN npm install --only=prod
 
 # Build Postleaf
-RUN gulp build
+#RUN gulp build
 
 # Create folders for volumes
 RUN mkdir cache data uploads
